@@ -19,10 +19,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner:false,
         title: 'Shopping app',
         theme: ThemeData(
+          useMaterial3: true,
           fontFamily: 'Lato',
           colorScheme: ColorScheme.fromSeed(
             seedColor: Color.fromRGBO(254, 206, 1, 1),
             primary: Color.fromRGBO(254, 206, 1, 1),
+            brightness: Brightness.light,
           ),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
@@ -52,8 +54,15 @@ class MyApp extends StatelessWidget {
               fontSize: 16,
             )
           ),
-          useMaterial3: true,
+          
         ),
+          darkTheme: ThemeData(useMaterial3: true,
+            fontFamily: 'Lato',
+            colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromRGBO(254, 206, 1, 1),
+            brightness: Brightness.dark,
+    )),
+          themeMode: ThemeMode.system,
       
         home: HomePage(),
       ),

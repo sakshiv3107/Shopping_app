@@ -31,15 +31,37 @@ final List<Map<String, Object>> products = [
     'company': 'Nike',
     'sizes': [8, 9, 10],
   },
-];
 
-final cart = [
   {
-    'id': '3',
-    'title': 'Jordan Shoes',
-    'price': 420.69,
-    'imageUrl': 'assets/images/shoes_4.png',
-    'company': 'Nike',
-    'size': 9,
+    'id': '4',
+    'title': 'Puma Running Shoes',
+    'price': 35.40,
+    'imageUrl': 'assets/images/shoes_5.png',
+    'company': 'Puma',
+    'sizes': [7, 8, 9, 10],
   },
+  {
+    'id': '5',
+    'title': 'Reebok Training Shoes',
+    'price': 39.99,
+    'imageUrl': 'assets/images/shoes_6.png',
+    'company': 'Reebok',
+    'sizes': [8, 9, 10, 11],
+  },
+  {
+    'id': '6',
+    'title': 'Nike Air Max',
+    'price': 120.75,
+    'imageUrl': 'assets/images/shoes_7.png',
+    'company': 'Nike',
+    'sizes': [8, 9, 10, 11, 12],
+  },
+  {
+    'id': '7',
+    'title': 'Addidas UltraBoost',
+    'price': 98.30,
+    'imageUrl': 'assets/images/shoes_8.png',
+    'company': 'Addidas',
+    'sizes': [7, 8, 9, 10, 11],
+  }
 ];

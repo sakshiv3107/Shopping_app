@@ -5,14 +5,13 @@ import 'package:shopping_app/product_details_page.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
-  
+
   @override
   State<ProductList> createState() => _ProductListState();
-
 }
 
 class _ProductListState extends State<ProductList> {
-  late String selectedFilter;
+  String selectedFilter = 'All';
 
   final List<String> filters = const [
     'All',
@@ -24,107 +23,106 @@ class _ProductListState extends State<ProductList> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    selectedFilter = filters[0];
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final border = OutlineInputBorder(
-      borderRadius: BorderRadius.horizontal(left: Radius.circular(30)),
-      borderSide: BorderSide(color: Color.fromRGBO(173, 173, 173, 1)),
-    );
+    final filteredProducts = selectedFilter == 'All'
+        ? products
+        : products
+            .where((p) => p['company'] == selectedFilter)
+            .toList();
+
     return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Text(
-                    'Shoes\nCollection',
-                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      prefixIcon: Icon(Icons.search, size: 20),
-                      border: border,
-                      enabledBorder: border,
-                      focusedBorder: border,
-                    ),
-                  ),
-                ),
-              ],
+            // Header
+            const SizedBox(height: 10),
+            const Text(
+              'Shoes \nCollection',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
+
+            const SizedBox(height: 16),
+
+            // Search Bar
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Search shoes',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: const Color.fromRGBO(245, 247, 249, 1),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Filters
             SizedBox(
-              height: 50,
-              child: ListView.builder(
-                itemCount: filters.length,
+              height: 42,
+              child: ListView.separated(
                 scrollDirection: Axis.horizontal,
+                itemCount: filters.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 8),
                 itemBuilder: (context, index) {
                   final filter = filters[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5.0,
-                      vertical: 3.0,
+                  final isSelected = selectedFilter == filter;
+
+                  return ChoiceChip(
+                    label: Text(filter),
+                    showCheckmark: false,
+                    selected: isSelected,
+                    onSelected: (_) {
+                      setState(() {
+                        selectedFilter = filter;
+                      });
+                    },
+                    selectedColor:
+                        Theme.of(context).colorScheme.primary,
+                    backgroundColor:
+                        const Color.fromRGBO(245, 247, 249, 1),
+                    labelStyle: TextStyle(
+                      color: isSelected ? const Color.fromARGB(255, 0, 0, 0) : Colors.black,
+                      fontSize: 15,
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedFilter = filter;
-                        });
-                      },
-                      child: Chip(
-                        backgroundColor: selectedFilter == filter
-                            ? Theme.of(context).colorScheme.primary
-                            : Color.fromRGBO(245, 247, 249, 1),
-                        side: BorderSide(
-                          color: Color.fromRGBO(245, 247, 249, 1),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 13,
-                          vertical: 6,
-                        ),
-                        label: Text(filter),
-                        labelStyle: TextStyle(fontSize: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusGeometry.circular(30),
-                        ),
-                      ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
                     ),
                   );
                 },
               ),
             ),
+
+            const SizedBox(height: 20),
+
+            // Product List
             Expanded(
               child: ListView.builder(
-                itemCount: products.length,
-                scrollDirection: Axis.vertical,
+                itemCount: filteredProducts.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
-                  final productTitle = product['title'];
-                  final productPrice = product['price'];
+                  final product = filteredProducts[index];
+
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
-                          builder: (context) {
-                            return ProductDetailsPage(product: product);
-                          },
+                          builder: (_) =>
+                              ProductDetailsPage(product: product),
                         ),
                       );
                     },
                     child: ProductCart(
-                      title: productTitle as String,
-                      price: productPrice as double,
+                      title: product['title'] as String ,
+                      price: product['price'] as double,
                       image: product['imageUrl'] as String,
                       backgroundColor: index.isEven
-                          ? Color.fromRGBO(216, 240, 253, 1)
-                          : Color.fromRGBO(245, 247, 249, 1),
+                          ? const Color.fromRGBO(216, 240, 253, 1)
+                          : const Color.fromRGBO(245, 247, 249, 1),
                     ),
                   );
                 },
@@ -132,6 +130,7 @@ class _ProductListState extends State<ProductList> {
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 }
