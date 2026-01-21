@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/global_variables.dart';
 import 'package:shopping_app/product_cart.dart';
 import 'package:shopping_app/product_details_page.dart';
+import 'package:shopping_app/product_model.dart';
 
 class ProductList extends StatefulWidget {
   const ProductList({super.key});
@@ -12,6 +13,7 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   String selectedFilter = 'All';
+  String searchQuery = '';
 
   final List<String> filters = const [
     'All',
@@ -24,11 +26,15 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredProducts = selectedFilter == 'All'
-        ? products
-        : products
-            .where((p) => p['company'] == selectedFilter)
-            .toList();
+    final List<Product> filteredProducts = products.where((product) {
+      final matchesFilter =
+          selectedFilter == 'All' || product.company == selectedFilter;
+
+      final matchesSearch =
+          product.title.toLowerCase().contains(searchQuery.toLowerCase());
+
+      return matchesFilter && matchesSearch;
+    }).toList();
 
     return SafeArea(
       child: Padding(
@@ -47,6 +53,11 @@ class _ProductListState extends State<ProductList> {
 
             // Search Bar
             TextField(
+               onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
               decoration: InputDecoration(
                 hintText: 'Search shoes',
                 prefixIcon: const Icon(Icons.search),
@@ -81,12 +92,12 @@ class _ProductListState extends State<ProductList> {
                         selectedFilter = filter;
                       });
                     },
-                    selectedColor:
-                        Theme.of(context).colorScheme.primary,
-                    backgroundColor:
-                        const Color.fromRGBO(245, 247, 249, 1),
+                    selectedColor: Theme.of(context).colorScheme.primary,
+                    backgroundColor: const Color.fromRGBO(245, 247, 249, 1),
                     labelStyle: TextStyle(
-                      color: isSelected ? const Color.fromARGB(255, 0, 0, 0) : Colors.black,
+                      color: isSelected
+                          ? const Color.fromARGB(255, 0, 0, 0)
+                          : Colors.black,
                       fontSize: 15,
                     ),
                     shape: RoundedRectangleBorder(
@@ -117,9 +128,9 @@ class _ProductListState extends State<ProductList> {
                       );
                     },
                     child: ProductCart(
-                      title: product['title'] as String ,
-                      price: product['price'] as double,
-                      image: product['imageUrl'] as String,
+                      title: product.title,
+                      price: product.price,
+                      image: product.imageUrl,
                       backgroundColor: index.isEven
                           ? const Color.fromRGBO(216, 240, 253, 1)
                           : const Color.fromRGBO(245, 247, 249, 1),
