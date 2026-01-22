@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "722142519564",
+    "project_id": "flutter-shopping-app-4111c",
+    "storage_bucket": "flutter-shopping-app-4111c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722142519564:android:e6151464a69799e1906929",
+        "android_client_info": {
+          "package_name": "com.example.shopping_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrjItl2ZYoQ5-roFKOHS4p9wXliPQIS8M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
