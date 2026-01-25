@@ -7,7 +7,7 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  /// 🔐 GOOGLE SIGN-IN
+  /// GOOGLE SIGN-IN
   Future<User?> signInWithGoogle() async {
     try {
       // Step 1: Trigger Google Sign-In
@@ -50,7 +50,7 @@ class AuthService {
     }
   }
 
-  // 📝 SIGN UP
+  // SIGN UP
   Future<User?> signUp(String name, String email, String password) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -65,7 +65,7 @@ class AuthService {
           'name': name,
           'email': email,
           'photoUrl': null,
-          'createdAt': DateTime.now(),
+          'createdAt': FieldValue.serverTimestamp(),
           'authMethod': 'email',
         });
       }
