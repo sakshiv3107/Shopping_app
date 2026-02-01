@@ -33,7 +33,7 @@ class ProductCart extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 🏷 Product title
+          // Product title
           Text(
             title,
             maxLines: 2,
@@ -43,7 +43,6 @@ class ProductCart extends StatelessWidget {
 
           const SizedBox(height: 6),
 
-          // 💲 Price
           Text(
             '\$${price.toStringAsFixed(2)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -54,7 +53,6 @@ class ProductCart extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          // 🖼 Product image
           Center(
             child: Image.asset(
               image,
@@ -64,6 +62,7 @@ class ProductCart extends StatelessWidget {
           ),
         ],
       ),
+      
     );
   }
 }

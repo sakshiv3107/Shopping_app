@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shopping_app/cart_page.dart';
 import 'package:shopping_app/product_list.dart';
 import 'package:shopping_app/services/auth_service.dart';
-import 'package:shopping_app/auth/login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,94 +14,66 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   final AuthService authService = AuthService();
 
-  final List<Widget> pages = const [ProductList(), CartPage()];
+  late final List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+
+    pages = [
+      const ProductList(),
+      CartPage(
+        onGoHome: () {
+          setState(() {
+            currentPage = 0; 
+          });
+        },
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shopping App'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
+        elevation: 0,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.storefront_outlined, size: 22),
+            SizedBox(width: 8),
+            Text(
+              'Shopping App',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Logout'),
-                  content: const Text('Are you sure you want to logout?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        await authService.signOut();
-                        if (mounted) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                            (route) => false,
-                          );
-                        }
-                      },
-                      child: const Text('Logout'),
-                    ),
-                  ],
-                ),
-              );
+              await authService.signOut();
             },
           ),
         ],
       ),
-      body: IndexedStack(index: currentPage, children: pages),
 
-      // Enhanced Bottom Navigation
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, -2),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: currentPage,
-          onTap: (value) {
-            setState(() {
-              currentPage = value;
-            });
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          iconSize: 28,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Colors.grey,
-
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined),
-              activeIcon: Icon(Icons.shopping_cart),
-              label: 'Cart',
-            ),
-          ],
-        ),
+      body: IndexedStack(
+        index: currentPage,
+        children: pages,
       ),
+
+      floatingActionButton: currentPage == 1
+    ? null
+    : FloatingActionButton(
+        onPressed: () {
+          setState(() => currentPage = 1);
+        },
+        child: const Icon(Icons.shopping_cart),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
