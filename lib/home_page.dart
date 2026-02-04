@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: currentPage==0 ? AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 0,
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
-      ),
+      ):null,
 
       body: IndexedStack(
         index: currentPage,

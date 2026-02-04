@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato',
 
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromRGBO(254, 206, 1, 1),
-          primary: const Color.fromRGBO(254, 206, 1, 1),
+          seedColor: const Color.fromARGB(255, 1, 203, 254),
+          primary: const Color.fromARGB(255, 1, 165, 254),
           brightness: Brightness.light,
         ),
 
@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato',
 
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromRGBO(254, 206, 1, 1),
+          seedColor: const Color.fromARGB(255, 1, 161, 254),
           brightness: Brightness.dark,
         ),
       ),

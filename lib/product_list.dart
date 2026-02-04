@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_app/product_cart.dart';
 import 'package:shopping_app/product_details_page.dart';
-import 'package:shopping_app/product_model.dart';
+import 'package:shopping_app/models/product_model.dart';
 import 'package:shopping_app/user_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopping_app/services/product_firestore_services.dart';
@@ -45,7 +45,7 @@ class _ProductListState extends State<ProductList> {
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
             ),
-            const SliverToBoxAdapter(child: const SizedBox(height: 16)),
+            const SliverToBoxAdapter(child: SizedBox(height: 16)),
             SliverToBoxAdapter(
               child: TextField(
                 onChanged: (value) {
@@ -121,7 +121,7 @@ class _ProductListState extends State<ProductList> {
                     ),
                   );
                 }
-                final docs = snapshot.data!.docs ?? [];
+                final docs = snapshot.data!.docs;
                  if (docs.isEmpty) {
                   return const SliverToBoxAdapter(
                     child: Center(

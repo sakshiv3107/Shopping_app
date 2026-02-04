@@ -2,80 +2,96 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/services/cart_firestore_service.dart';
+import 'package:shopping_app/checkout_page.dart';
 
 class CartPage extends StatelessWidget {
   final VoidCallback onGoHome;
   const CartPage({super.key, required this.onGoHome});
 
+  Stream<QuerySnapshot> cartStream() {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('cart')
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> cartStream() {
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      return FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .collection('cart')
-          .snapshots();
-    }
     final cartService = CartFirestoreService();
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: onGoHome,
-        child: const Icon(Icons.home),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: StreamBuilder<QuerySnapshot>(
-        stream: cartStream(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          final cartDocs = snapshot.data!.docs;
-      
-          if (cartDocs.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Your cart is empty 🛒'),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: onGoHome,
-                  child: const Text('Continue Shopping'),
-                ),
-              ],
-            ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: cartStream(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
           );
         }
-      
+
+        final cartDocs = snapshot.data!.docs;
+
         double totalPrice = 0;
-      
         for (var doc in cartDocs) {
           final data = doc.data() as Map<String, dynamic>;
-          totalPrice += data['price'] * data['quantity'];
+          totalPrice += (data['price'] as num) * (data['quantity'] as num);
         }
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('My Cart'),
+            centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: onGoHome,
+            ),
+          ),
+
+          // HOME FLOATING BUTTON 
+          
+          floatingActionButton: FloatingActionButton(
+            onPressed: onGoHome,
+            child: const Icon(Icons.home),
+          ),
+
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+
+          // 
+          // MAIN BODY 
+          
+          body: cartDocs.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Your cart is empty 🛒'),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: onGoHome,
+                        child: const Text('Continue Shopping'),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 120),
                   itemCount: cartDocs.length,
                   itemBuilder: (context, index) {
-                    final item = cartDocs[index].data() as Map<String, dynamic>;
-      
+                    final item =
+                        cartDocs[index].data() as Map<String, dynamic>;
+
                     return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
+                      margin: const EdgeInsets.symmetric(vertical: 8),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         child: Row(
                           children: [
-                            //  Image
+                            // IMAGE
                             Container(
                               width: 80,
                               height: 80,
@@ -88,42 +104,54 @@ class CartPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-      
+
                             const SizedBox(width: 12),
-      
-                            // Info
+
+                            // INFO
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     item['title'],
-                                    style: Theme.of(context).textTheme.bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.w600),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
+
                                   const SizedBox(height: 4),
+
                                   Text('Size: ${item['size']}'),
+
                                   const SizedBox(height: 6),
-      
-                                  // Quantity controls
+
+                                  // QUANTITY CONTROLS
                                   Row(
                                     children: [
                                       IconButton(
                                         icon: const Icon(Icons.remove),
                                         onPressed: () {
-                                          cartService.updateQty(cartDocs[index].id, -1);
+                                          cartService.updateQty(
+                                            cartDocs[index].id,
+                                            -1,
+                                          );
                                         },
                                       ),
+
                                       Text(
                                         item['quantity'].toString(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+
                                       IconButton(
                                         icon: const Icon(Icons.add),
                                         onPressed: () {
-                                          cartService.updateQty(cartDocs[index].id, 1);
+                                          cartService.updateQty(
+                                            cartDocs[index].id,
+                                            1,
+                                          );
                                         },
                                       ),
                                     ],
@@ -131,10 +159,13 @@ class CartPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-      
-                            //  Delete
+
+                            // DELETE
                             IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
                               onPressed: () {
                                 showDialog(
                                   context: context,
@@ -145,17 +176,21 @@ class CartPage extends StatelessWidget {
                                     ),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context),
+                                        onPressed: () =>
+                                            Navigator.pop(context),
                                         child: const Text('No'),
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          cartService.deleteProduct(cartDocs[index].id);
+                                          cartService.deleteProduct(
+                                            cartDocs[index].id,
+                                          );
                                           Navigator.pop(context);
                                         },
                                         child: const Text(
                                           'Yes',
-                                          style: TextStyle(color: Colors.red),
+                                          style:
+                                              TextStyle(color: Colors.red),
                                         ),
                                       ),
                                     ],
@@ -169,40 +204,73 @@ class CartPage extends StatelessWidget {
                     );
                   },
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10,
-                      offset: const Offset(0, -2),
+
+          //  BOTTOM SECTION 
+          bottomNavigationBar: SafeArea(
+            top: false,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 6),
+
+              child: Row(
+                children: [
+                  // TOTAL
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Total',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black54,
+                          ),
+                        ),
+
+                        const SizedBox(height: 2),
+
+                        Text(
+                          '\$${totalPrice.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Total',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      '\$${totalPrice.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                  ),
+
+                  // CHECKOUT BUTTON
+                  SizedBox(
+                    height: 40,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
                       ),
+                      onPressed: cartDocs.isEmpty
+                          ? null
+                          : () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      const CheckoutPage(),
+                                ),
+                              );
+                            },
+                      child: const Text('Checkout'),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
