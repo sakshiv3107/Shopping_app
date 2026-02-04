@@ -108,10 +108,7 @@ class _ProductListState extends State<ProductList> {
 
             StreamBuilder<QuerySnapshot>(
               stream: productService.getProduct(),
-              builder: (context, snapshot) {
-                print("CONNECTION STATE: ${snapshot.connectionState}");
-                print("HAS DATA: ${snapshot.hasData}");
-                print("ERROR: ${snapshot.error}");           
+              builder: (context, snapshot) {     
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SliverToBoxAdapter(
                     child: Center(child: CircularProgressIndicator()),
@@ -135,7 +132,6 @@ class _ProductListState extends State<ProductList> {
 
                 List<Product> allProducts = docs.map((doc) {
                   final data = doc.data() as Map<String, dynamic>;
-                  print("RAW DATA FROM FIRESTORE: $data");
                   return Product(
                     id: doc.id,
                     title: data['title'],

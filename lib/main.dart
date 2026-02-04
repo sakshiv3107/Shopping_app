@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shopping_app/cart_provider.dart';
-// import 'package:shopping_app/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shopping_app/auth_wrapper.dart';
 import 'firebase_options.dart';
@@ -9,7 +6,9 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }
@@ -17,51 +16,68 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CartProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Shopping app',
-        theme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Lato',
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Color.fromRGBO(254, 206, 1, 1),
-            primary: Color.fromRGBO(254, 206, 1, 1),
-            brightness: Brightness.light,
-          ),
-          appBarTheme: AppBarTheme(
-            titleTextStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            hintStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            prefixIconColor: Color.fromRGBO(119, 119, 119, 1),
-          ),
-          textTheme: TextTheme(
-            titleLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            titleMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            bodySmall: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Shopping App',
+
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'Lato',
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromRGBO(254, 206, 1, 1),
+          primary: const Color.fromRGBO(254, 206, 1, 1),
+          brightness: Brightness.light,
+        ),
+
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
           ),
         ),
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          fontFamily: 'Lato',
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromRGBO(254, 206, 1, 1),
-            brightness: Brightness.dark,
+
+        inputDecorationTheme: const InputDecorationTheme(
+          hintStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+          prefixIconColor: Color.fromRGBO(119, 119, 119, 1),
+        ),
+
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+          titleMedium: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
         ),
-        themeMode: ThemeMode.system,
-        
-        home: AuthWrapper(),
       ),
+
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'Lato',
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromRGBO(254, 206, 1, 1),
+          brightness: Brightness.dark,
+        ),
+      ),
+
+      themeMode: ThemeMode.system,
+
+      // Entry Point
+      home: AuthWrapper(),
     );
   }
 }

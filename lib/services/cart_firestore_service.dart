@@ -11,6 +11,8 @@ class CartFirestoreService {
     required String title,
     required double price,
     required String image,
+    required String size,
+
   }) async {
     final docref = _db
         .collection('users')
@@ -29,6 +31,7 @@ class CartFirestoreService {
         'image': image,
         'quantity': 1,
         'createdAt': FieldValue.serverTimestamp(),
+        'size': size,
       });
     }
   }

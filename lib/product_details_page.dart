@@ -24,6 +24,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       title: widget.product.title,
       price: widget.product.price,
       image: widget.product.imageUrl,
+      size: selectedSize.toString(),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
