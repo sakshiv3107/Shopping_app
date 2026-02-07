@@ -1,20 +1,39 @@
-<<<<<<< HEAD
-# shopping_app
+# 🛍 Shopping App – Flutter + Firebase
 
-A new Flutter project.
+A mobile shopping application with real-time product listing, cart management, checkout, and order history using **Flutter & Firebase**.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* 🔐 Firebase Authentication (Login/Signup/Logout)
+* 🏬 Real-time products from Firestore
+* 🔍 Search & filter by brand
+* 🛒 Add to cart with quantity & size
+* 💳 Checkout with address & payment method
+* 📦 Order placement & order history
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Flutter (Dart)
+* Firebase Auth
+* Cloud Firestore
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-=======
-# Shopping_app
->>>>>>> b028b8cb4c8dc461a070b537c3ef03f406bb84c7
+## Firestore Structure
+
+* `users/{uid}/cart/{productId}`
+* `orders/{orderId}` → items, totalPrice, address, paymentMethod, status, createdAt
+
+## Setup
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Future Scope
+
+* Admin panel
+* Payment gateway
+* Order status tracking
+* Firebase Storage for images
+
+**Developed by: Sakshi**
