@@ -33,24 +33,27 @@ class _SignupPageState extends State<SignupPage> {
               children: [
                 const SizedBox(height: 40),
                 // Header
-                const Text(
-                  'Create\nAccount',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                Center(
+                  child: const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Join us to get started',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color.fromRGBO(119, 119, 119, 1),
+                Center(
+                  child: const Text(
+                    'Join us to get started',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color.fromRGBO(119, 119, 119, 1),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 48),
-
                 // Name TextField
                 const Text(
                   'Full Name',
@@ -184,7 +187,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: loading
                       ? const Center(
                           child: CircularProgressIndicator(
-                            color: Color.fromRGBO(254, 206, 1, 1),
+                            color: Color.fromRGBO(59, 160, 254, 1),
                           ),
                         )
                       : ElevatedButton(
@@ -227,12 +230,7 @@ class _SignupPageState extends State<SignupPage> {
                             setState(() => loading = false);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromRGBO(
-                              254,
-                              206,
-                              1,
-                              1,
-                            ),
+                            backgroundColor: Color.fromRGBO(59, 160, 254, 1),
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -350,7 +348,7 @@ class _SignupPageState extends State<SignupPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(254, 206, 1, 1),
+                          color: Color.fromRGBO(59, 134, 254, 1),
                         ),
                       ),
                     ),

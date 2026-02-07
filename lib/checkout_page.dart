@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app/services/cart_firestore_service.dart';
+// import 'package:shopping_app/services/cart_firestore_service.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -112,7 +112,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cartService = CartFirestoreService();
+    // final cartService = CartFirestoreService();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Checkout'), centerTitle: true),
@@ -170,7 +170,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         onChanged: (v) => setState(() => _paymentMethod = v!),
                       ),
                       RadioListTile<String>(
-                        value: 'COD',
+                        value: 'UPI',
                         groupValue: _paymentMethod,
                         title: const Text('UPI'),
                         onChanged: (v) => setState(() => _paymentMethod = v!),
