@@ -7,14 +7,14 @@ A mobile shopping application with real-time product listing, cart management, c
 * 🔐 Firebase Authentication (Login/Signup/Logout)
 * 🏬 Real-time products from Firestore
 * 🔍 Search & filter by brand
-* 🛒 Add to cart with quantity & size
+* 🛒 Add to cart with quantity & size management
 * 💳 Checkout with address & payment method
 * 📦 Order placement & order history
 
 ## Tech Stack
 
 * Flutter (Dart)
-* Firebase Auth
+* Firebase Authentication
 * Cloud Firestore
 
 ## Firestore Structure
@@ -28,12 +28,5 @@ A mobile shopping application with real-time product listing, cart management, c
 flutter pub get
 flutter run
 ```
-
-## Future Scope
-
-* Admin panel
-* Payment gateway
-* Order status tracking
-* Firebase Storage for images
 
 **Developed by: Sakshi**
