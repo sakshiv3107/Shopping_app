@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/cart_page.dart';
-import 'package:shopping_app/product_list.dart';
+import 'package:shopping_app/pages/cart_page.dart';
+import 'package:shopping_app/pages/product_list.dart';
 import 'package:shopping_app/services/auth_service.dart';
-import 'package:shopping_app/order_history_page.dart';   // 👈 NEW
+import 'package:shopping_app/pages/order_history_page.dart';  
+import 'package:shopping_app/admin/admin_home.dart';
+import 'package:shopping_app/services/admin_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -101,6 +103,24 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
+                IconButton(
+                  icon: const Icon(Icons.admin_panel_settings),
+                  onPressed: () async {
+                    final isAdmin = await AdminService().isAdmin();
+
+                    if (isAdmin) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const AdminHome()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Not Admin")),
+                      );
+                    }
+                  },
+                ),
+
               ],
             )
           : null,

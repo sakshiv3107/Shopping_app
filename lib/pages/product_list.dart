@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/product_cart.dart';
-import 'package:shopping_app/product_details_page.dart';
+import 'package:shopping_app/pages/product_cart.dart';
+import 'package:shopping_app/pages/product_details_page.dart';
 import 'package:shopping_app/models/product_model.dart';
-import 'package:shopping_app/user_header.dart';
+import 'package:shopping_app/pages/user_header.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopping_app/services/product_firestore_services.dart';
 

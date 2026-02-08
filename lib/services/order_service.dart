@@ -17,4 +17,17 @@ class OrderService {
   Future<DocumentSnapshot> getOrderById(String id) {
     return _db.collection('orders').doc(id).get();
   }
+
+  Stream<QuerySnapshot> getAllOrders() {
+    return _db
+        .collection('orders')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  Future<void> updateStatus(String orderId, String status) async {
+    await _db.collection('orders').doc('orderId').update({
+      'orderStatus': status,
+    });
+  }
 }

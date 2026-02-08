@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shopping_app/auth_wrapper.dart';
-import 'firebase_options.dart';
+import 'package:shopping_app/pages/auth_wrapper.dart';
+import 'pages/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

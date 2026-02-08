@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app/services/cart_firestore_service.dart';
-import 'package:shopping_app/checkout_page.dart';
+import 'package:shopping_app/pages/checkout_page.dart';
 
 class CartPage extends StatelessWidget {
   final VoidCallback onGoHome;

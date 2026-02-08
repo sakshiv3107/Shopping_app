@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'services/order_service.dart';
+import '../services/order_service.dart';
 import 'order_detail_page.dart';
 
 class OrderHistoryPage extends StatelessWidget {
