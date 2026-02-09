@@ -26,7 +26,7 @@ class OrderService {
   }
 
   Future<void> updateStatus(String orderId, String status) async {
-    await _db.collection('orders').doc('orderId').update({
+    await _db.collection('orders').doc(orderId).update({
       'orderStatus': status,
     });
   }
